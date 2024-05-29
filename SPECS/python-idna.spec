@@ -2,12 +2,18 @@
 
 Name:           python-%{srcname}
 Version:        2.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Internationalized Domain Names in Applications (IDNA)
 
 License:        BSD and Python and Unicode
 URL:            https://github.com/kjd/idna
 Source0:        https://pypi.io/packages/source/i/%{srcname}/%{srcname}-%{version}.tar.gz
+
+# Security fix for CVE-2024-3651
+# Upstream: https://github.com/kjd/idna/commit/5beb28b9dd77912c0dd656d8b0fdba3eb80222e7
+# Tracking bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2274779
+Patch:          CVE-2024-3651.patch
+
 BuildArch:      noarch
 # Exclude i686 arch. Due to a modularity issue it's being added to the
 # x86_64 compose of CRB, but we don't want to ship it at all.
@@ -65,6 +71,10 @@ rm -rf %{srcname}.egg-info
 
 
 %changelog
+* Thu May 09 2024 Charalampos Stratakis <cstratak@redhat.com> - 2.10-4
+- Security fix for CVE-2024-3651
+Resolves: RHEL-32705
+
 * Wed Jan 13 2021 Tomas Orsava <torsava@redhat.com> - 2.10-3
 - Convert from Fedora to the python39 module in RHEL8
 - Resolves: rhbz#1877430
