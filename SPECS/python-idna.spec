@@ -2,12 +2,18 @@
 
 Name:           python-%{srcname}
 Version:        2.10
-Release:        7%{?dist}
+Release:        7%{?dist}.1
 Summary:        Internationalized Domain Names in Applications (IDNA)
 
 License:        BSD and Python and Unicode
 URL:            https://github.com/kjd/idna
 Source0:        https://pypi.io/packages/source/i/%{srcname}/%{srcname}-%{version}.tar.gz
+
+# Security fix for CVE-2024-3651
+# Upstream: https://github.com/kjd/idna/commit/5beb28b9dd77912c0dd656d8b0fdba3eb80222e7
+# Tracking bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2274779
+Patch:          CVE-2024-3651.patch
+
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
@@ -59,6 +65,10 @@ rm -rf %{srcname}.egg-info
 %{python3_sitelib}/%{srcname}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Tue Apr 23 2024 Lumír Balhar <lbalhar@redhat.com> - 2.10-7.1
+- Security fix for CVE-2024-3651
+Resolves: RHEL-33464
+
 * Mon Feb 21 2022 Tomas Orsava <torsava@redhat.com> - 2.10-7
 - Add gating configuration and a simple smoke test
 - Related: rhbz#1950291
