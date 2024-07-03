@@ -15,12 +15,18 @@
 
 Name:           python-%{srcname}
 Version:        2.5
-Release:        5%{?dist}
+Release:        7%{?dist}
 Summary:        Internationalized Domain Names in Applications (IDNA)
 
 License:        BSD and Python and Unicode
 URL:            https://github.com/kjd/idna
 Source0:        https://pypi.io/packages/source/i/%{srcname}/%{srcname}-%{version}.tar.gz
+
+# Security fix for CVE-2024-3651
+# Upstream: https://github.com/kjd/idna/commit/5beb28b9dd77912c0dd656d8b0fdba3eb80222e7
+# Tracking bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2274779
+Patch:          CVE-2024-3651.patch
+
 BuildArch:      noarch
 
 %if 0%{?with_python2}
@@ -75,7 +81,7 @@ currently only supports the older 2003 specification.
 %endif # with_python3
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%autosetup -p1 -n %{srcname}-%{version}
 # Remove bundled egg-info
 rm -rf %{srcname}.egg-info
 
@@ -123,6 +129,14 @@ rm -rf %{srcname}.egg-info
 %endif # with_python3
 
 %changelog
+* Thu Apr 25 2024 Lumír Balhar <lbalhar@redhat.com> - 2.5-7
+- Fix patch application for security fix for CVE-2024-3651
+Resolves: RHEL-32703
+
+* Tue Apr 23 2024 Lumír Balhar <lbalhar@redhat.com> - 2.5-6
+- Security fix for CVE-2024-3651
+Resolves: RHEL-32703
+
 * Thu Jun 28 2018 Christian Heimes <cheimes@redhat.com> - 2.5-5
 - Drop Python 2 subpackage from RHEL 8, fixes RHBZ#1590399
 
