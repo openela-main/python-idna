@@ -15,7 +15,7 @@
 
 Name:           python-%{srcname}
 Version:        2.5
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Internationalized Domain Names in Applications (IDNA)
 
 License:        BSD and Python and Unicode
@@ -25,7 +25,12 @@ Source0:        https://pypi.io/packages/source/i/%{srcname}/%{srcname}-%{versio
 # Security fix for CVE-2024-3651
 # Upstream: https://github.com/kjd/idna/commit/5beb28b9dd77912c0dd656d8b0fdba3eb80222e7
 # Tracking bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2274779
-Patch:          CVE-2024-3651.patch
+Patch0:          CVE-2024-3651.patch
+
+# Security fix for CVE-2026-45409
+# Upstream: https://github.com/kjd/idna/commit/c0dda4501df5d91c3181ce6f962dc5de74e82cc1
+# Upstream: https://github.com/kjd/idna/commit/e1cb465b6376f33306a26f467d197edbcd01c4b9
+Patch1:         CVE-2026-45409.patch
 
 BuildArch:      noarch
 
@@ -129,6 +134,10 @@ rm -rf %{srcname}.egg-info
 %endif # with_python3
 
 %changelog
+* Mon Jul 27 2026 RHEL Packaging Agent <redhat-ymir-agent@redhat.com> - 2.5-8
+- Security fix for CVE-2026-45409
+Resolves: RHEL-215650
+
 * Thu Apr 25 2024 Lumír Balhar <lbalhar@redhat.com> - 2.5-7
 - Fix patch application for security fix for CVE-2024-3651
 Resolves: RHEL-32703
